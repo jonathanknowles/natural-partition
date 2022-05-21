@@ -1,0 +1,79 @@
+cabal-version:  3.0
+name:           natural-partition
+version:        0.0.0
+bug-reports:    https://github.com/jonathanknowles/natural-partition/issues
+license:        Apache-2.0
+license-file:   LICENSE
+author:         Jonathan Knowles
+maintainer:     mail@jonathanknowles.net
+copyright:      2022 Jonathan Knowles
+category:       Testing
+synopsis:       Natural number partitions
+description:
+    Computing partitions of natural numbers.
+
+extra-source-files:
+    README.md
+
+common common-extensions
+    default-extensions:
+        DerivingStrategies
+        FlexibleContexts
+        FlexibleInstances
+        GeneralizedNewtypeDeriving
+        LambdaCase
+        MultiParamTypeClasses
+        ScopedTypeVariables
+        TupleSections
+        TypeApplications
+        TypeFamilies
+        ViewPatterns
+
+source-repository head
+    type: git
+    location: https://github.com/jonathanknowles/natural-partition
+
+library
+    import:
+        common-extensions
+    hs-source-dirs:
+        src/natural-partition
+    exposed-modules:
+        Numeric.Natural.Partition
+    default-language:
+        Haskell2010
+    build-depends:
+        base >=4.7 && <5
+      , natural-partition-internal
+
+library natural-partition-internal
+    import:
+        common-extensions
+    hs-source-dirs:
+        src/natural-partition-internal
+    exposed-modules:
+        Numeric.Natural.Partition.Internal
+    default-language:
+        Haskell2010
+    build-depends:
+        base >=4.7 && <5
+
+test-suite natural-partition-test
+    import:
+        common-extensions
+    main-is:
+        Spec.hs
+    hs-source-dirs:
+        src/natural-partition-test
+    other-modules:
+        Numeric.Natural.PartitionSpec
+    type: exitcode-stdio-1.0
+    default-language:
+        Haskell2010
+    build-tool-depends:
+        hspec-discover:hspec-discover ==2.*
+    build-depends:
+        base >=4.7 && <5
+      , hspec
+      , natural-partition
+      , QuickCheck
