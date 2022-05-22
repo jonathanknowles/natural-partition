@@ -9,7 +9,7 @@ import Data.Function
 import Data.List.NonEmpty
     ( NonEmpty (..) )
 import Data.Maybe
-    ( mapMaybe )
+    ( isJust, mapMaybe )
 import Data.Ratio
     ( (%) )
 import Numeric.Natural
@@ -38,10 +38,23 @@ spec :: Spec
 spec = do
 
     describe "partitionIdeal" $ do
+        it "prop_partitionIdeal_isJust" $
+            prop_partitionIdeal_isJust & property
         it "prop_partitionIdeal_length" $
             prop_partitionIdeal_length & property
         it "prop_partitionIdeal_sum" $
             prop_partitionIdeal_sum & property
+
+prop_partitionIdeal_isJust :: Natural -> NonEmpty Natural -> Property
+prop_partitionIdeal_isJust n ns =
+    checkCoverage $
+    cover 10
+        (sum ns >= 1 && n >= 1 && length ns > 1)
+        "sum ns >= 1 && n >= 1 && length ns > 1" $
+    cover 1
+        (sum ns == 0)
+        "sum ns == 0" $
+    isJust (partitionIdeal n ns) === (sum ns /= 0)
 
 prop_partitionIdeal_length :: Natural -> NonEmpty Natural -> Property
 prop_partitionIdeal_length n ns =
