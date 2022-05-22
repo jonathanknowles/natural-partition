@@ -12,17 +12,33 @@ import Data.List.NonEmpty
     ( NonEmpty (..), zipWith )
 import Data.Ratio
     ( Ratio, (%) )
+import Math.Apportionment
+    ( dHondtDivisors, highestAveragesScaled )
 import Numeric.Natural
     ( Natural )
 import Prelude hiding
     ( zipWith )
 
+import qualified Data.List.NonEmpty as NE
+
 partition
     :: Natural
     -> NonEmpty Natural
     -> Maybe (NonEmpty Natural)
-partition =
-    error "partition not implemented"
+partition n weights
+    | weightSum == 0 = Nothing
+    | otherwise = Just $ NE.zipWith (+) divComponent modComponent
+  where
+    weightSum = sum weights
+
+    divComponent = ((n `div` weightSum) *) <$> weights
+    modComponent = partitionRemainder (n `mod` weightSum) weights
+
+    partitionRemainder n weights =
+        fmap fromIntegral
+            $ NE.fromList
+            $ highestAveragesScaled dHondtDivisors
+                (fromIntegral n) ((% 1) <$> NE.toList weights)
 
 partitionIdeal
     :: Natural
@@ -40,7 +56,7 @@ partitionMax
     -> NonEmpty Natural
     -> Maybe (NonEmpty Natural)
 partitionMax n ns =
-    partitionIdeal n ns <&> fmap ceiling
+    partitionIdeal n ns <&> fmap ((+ 1) . ceiling)
 
 partitionMin
     :: Natural
