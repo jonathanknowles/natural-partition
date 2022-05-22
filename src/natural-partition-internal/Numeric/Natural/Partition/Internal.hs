@@ -49,27 +49,6 @@ partitionMin
 partitionMin n ns =
     partitionIdeal n ns <&> fmap floor
 
-partitionPreservesLength
-    :: Natural
-    -> NonEmpty Natural
-    -> Bool
-partitionPreservesLength n ns =
-    maybe (length ns) length (partition n ns) == length ns
-
-partitionIdealPreservesSum
-    :: Natural
-    -> NonEmpty Natural
-    -> Bool
-partitionIdealPreservesSum n ns =
-    maybe (n % 1) sum (partitionIdeal n ns) == n % 1
-
-partitionPreservesSum
-    :: Natural
-    -> NonEmpty Natural
-    -> Bool
-partitionPreservesSum n ns =
-    maybe n sum (partition n ns) == n
-
 partitionMaxBounded
     :: Natural
     -> NonEmpty Natural

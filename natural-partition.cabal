@@ -75,5 +75,6 @@ test-suite natural-partition-test
     build-depends:
         base >=4.7 && <5
       , hspec
-      , natural-partition
+      , natural-partition-internal
       , QuickCheck
+      , quickcheck-instances
