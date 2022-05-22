@@ -4,13 +4,9 @@
 --
 module Numeric.Natural.Partition
     ( partition
-    , partitionCeiling
-    , partitionFloor
     , partitionIdeal
-    , partitionPreservesLength
-    , partitionPreservesSum
-    , partitionBoundedByCeiling
-    , partitionBoundedByFloor
+    , partitionMax
+    , partitionMin
     ) where
 
 import Numeric.Natural.Partition.Internal

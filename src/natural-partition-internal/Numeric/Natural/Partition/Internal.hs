@@ -6,6 +6,8 @@ module Numeric.Natural.Partition.Internal where
 
 import Data.Bifunctor
     ( bimap )
+import Data.Functor
+    ( (<&>) )
 import Data.List.NonEmpty
     ( NonEmpty (..), zipWith )
 import Numeric.Natural
@@ -20,26 +22,26 @@ partition
 partition =
     error "partition not implemented"
 
-partitionCeiling
-    :: Natural
-    -> NonEmpty Natural
-    -> Maybe (NonEmpty Natural)
-partitionCeiling n ns =
-    fmap ceiling <$> partitionIdeal n ns
-
-partitionFloor
-    :: Natural
-    -> NonEmpty Natural
-    -> Maybe (NonEmpty Natural)
-partitionFloor n ns =
-    fmap floor <$> partitionIdeal n ns
-
 partitionIdeal
     :: Natural
     -> NonEmpty Natural
     -> Maybe (NonEmpty Rational)
 partitionIdeal =
     error "partitionIdeal not implemented"
+
+partitionMax
+    :: Natural
+    -> NonEmpty Natural
+    -> Maybe (NonEmpty Natural)
+partitionMax n ns =
+    partitionIdeal n ns <&> fmap ceiling
+
+partitionMin
+    :: Natural
+    -> NonEmpty Natural
+    -> Maybe (NonEmpty Natural)
+partitionMin n ns =
+    partitionIdeal n ns <&> fmap floor
 
 partitionPreservesLength
     :: Natural
@@ -55,16 +57,16 @@ partitionPreservesSum
 partitionPreservesSum n ns =
     maybe n sum (partition n ns) == sum ns
 
-partitionBoundedByCeiling
+partitionMaxBounded
     :: Natural
     -> NonEmpty Natural
     -> Bool
-partitionBoundedByCeiling n ns =
-    maybe True and (zipWith (<=) <$> partition n ns <*> partitionCeiling n ns)
+partitionMaxBounded n ns =
+    maybe True and (zipWith (<=) <$> partition n ns <*> partitionMax n ns)
 
-partitionBoundedByFloor
+partitionMinBounded
     :: Natural
     -> NonEmpty Natural
     -> Bool
-partitionBoundedByFloor n ns =
-    maybe True and (zipWith (>=) <$> partition n ns <*> partitionFloor n ns)
+partitionMinBounded n ns =
+    maybe True and (zipWith (>=) <$> partition n ns <*> partitionMin n ns)
