@@ -1,0 +1,10 @@
+cradle:
+  cabal:
+    - path: "src/natural-partition"
+      component: "lib:natural-partition"
+
+    - path: "src/natural-partition-internal"
+      component: "natural-partition:lib:natural-partition-internal"
+
+    - path: "src/natural-partition-test"
+      component: "natural-partition:test:natural-partition-test"
